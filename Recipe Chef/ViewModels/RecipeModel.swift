@@ -35,6 +35,7 @@ class RecipeModel: ObservableObject{
             if numerator > denominator{
                 wholePortions = numerator/denominator
                 numerator = numerator%denominator
+                portion += String(wholePortions)
             }
          
             if numerator >= 0{
