@@ -11,6 +11,7 @@ struct RecipeFeaturedView: View {
     
     @EnvironmentObject var model :RecipeModel
     @State var isDetailViewShowing = false
+    @State var tabSelectionIndex = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing:0){
@@ -22,7 +23,7 @@ struct RecipeFeaturedView: View {
                 .padding(.top, 15)
             
             GeometryReader{ geometry in
-            TabView{
+                TabView (selection: $tabSelectionIndex){
                 ForEach(0..<model.recipes.count){index in
                     if model.recipes[index].featured {
                         Button(action: {
@@ -43,6 +44,7 @@ struct RecipeFeaturedView: View {
                             }
                             
                         })
+                        .tag(index)
                         .sheet(isPresented: $isDetailViewShowing){
                             // Show recipe detail view
                             RecipeDetailsView(recipe: model.recipes[index])
@@ -63,14 +65,27 @@ struct RecipeFeaturedView: View {
             VStack(spacing: 8){
                 Text("Preperation Time")
                     .font(.headline)
-                Text("1 hour")
+                Text(model.recipes[tabSelectionIndex].prepTime)
                 Text("Highlights")
                     .font(.headline)
-                Text("Healthy Hearty")
+                Text(RecipeHighlights(highlights: model.recipes[tabSelectionIndex].highlights))
             }
             .padding(.leading, 20)
             .padding(.bottom, 7)
         }
+        .onAppear(perform: {
+            setFeaturedIndex()
+            
+        })
+    }
+    
+    func setFeaturedIndex(){
+        
+        //  Some kind of weird list comprehension
+        let index = model.recipes.firstIndex{ (recipe) -> Bool in
+            return recipe.featured
+        }
+        tabSelectionIndex = index ?? 0
     }
 }
 
