@@ -12,6 +12,7 @@ struct RecipeDetailsView: View {
 //    unspecified for now because we want the ListView to pick
 //    what recipe is chosen
     var recipe:Recipe
+    @State var servingSelection = 2
     
     var body: some View {
         ScrollView{
@@ -21,6 +22,21 @@ struct RecipeDetailsView: View {
                     .resizable()
                     .scaledToFill()
                 
+                VStack(alignment: .leading){
+                    Text("Select number of servings:")
+                        .font(.headline)
+                    Picker("", selection: $servingSelection){
+                        Text("2").tag(2)
+                        Text("4").tag(4)
+                        Text("6").tag(6)
+                        Text("8").tag(8)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(width: 200)
+                    
+                }
+                .padding()
+                
                 
                 // MARK: Ingredients
                 VStack(alignment: .leading){
@@ -28,7 +44,7 @@ struct RecipeDetailsView: View {
                         .font(.headline)
                         .padding(.bottom, 5)
                     ForEach(recipe.ingredients){ingredient in
-                        Text("• " + ingredient.name)
+                        Text("• " + RecipeModel.getPortion(ingredient, recipe.servings, servingSelection) + " " + ingredient.name.lowercased())
                             .padding(.bottom, 1)
                     }
                 }
