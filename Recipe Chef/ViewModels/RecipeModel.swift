@@ -40,7 +40,7 @@ class RecipeModel: ObservableObject{
          
             if numerator >= 0{
                 portion += wholePortions > 0 ? " " : ""
-                portion += "\(numerator) / \(denominator) "
+                portion += numerator > 0 ? "\(numerator) / \(denominator) ":""
             }
             
             if var unit = ingredient.unit{
