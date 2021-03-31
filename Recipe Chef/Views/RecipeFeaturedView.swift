@@ -19,7 +19,8 @@ struct RecipeFeaturedView: View {
             Text("Featured Recipes")
                 .bold()
                 .padding(.leading)
-                .font(.largeTitle)
+                .font(Font.custom("Avenir Heavy", size: 24))
+                //.font(.largeTitle)
                 .padding(.top, 15)
             
             GeometryReader{ geometry in
